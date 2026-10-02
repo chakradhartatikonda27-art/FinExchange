@@ -623,7 +623,7 @@ export default function HomePage() {
       <JobDetailsModal job={selectedJob} onClose={() => setSelectedJob(null)} />
       <CompanyDetailsModal company={selectedCompany} onClose={() => setSelectedCompany(null)} onEnquire={setEnquiryCompany} />
       <CompanyEnquiryModal company={enquiryCompany} onClose={() => setEnquiryCompany(null)} />
-      <MiniCvModal profile={selectedProfile} onClose={() => setSelectedProfile(null)} onInviteToJob={() => alert('Invite sent')} />
+      <MiniCvModal profile={selectedProfile} onClose={() => setSelectedProfile(null)} onInviteToJob={() => setSelectedProfile(null)} />
       <CompanyCompareModal companies={comparedCompanies} isOpen={isCompareModalOpen} onClose={() => setIsCompareModalOpen(false)} />
       <SellCompanyWizard isOpen={isSellWizardOpen} onClose={() => setIsSellWizardOpen(false)} />
       <BuyRequestModal isOpen={isBuyRequestOpen} onClose={() => setIsBuyRequestOpen(false)} />

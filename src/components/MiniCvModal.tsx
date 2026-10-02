@@ -15,8 +15,16 @@ interface MiniCvModalProps {
 export const MiniCvModal: React.FC<MiniCvModalProps> = ({ profile, onClose, onInviteToJob }) => {
   const { currentUser } = useApp();
   const [isIcaiModalOpen, setIsIcaiModalOpen] = useState(false);
+  const [isContactSent, setIsContactSent] = useState(false);
 
   if (!profile) return null;
+
+  const handleContact = () => {
+    setIsContactSent(true);
+    setTimeout(() => {
+      setIsContactSent(false);
+    }, 2500);
+  };
 
   return (
     <>
@@ -152,11 +160,24 @@ export const MiniCvModal: React.FC<MiniCvModalProps> = ({ profile, onClose, onIn
             {/* Action CTAs */}
             <div className="pt-3 border-t border-slate-200 flex items-center justify-end space-x-2">
               <button
-                onClick={() => alert(`Direct contact request sent to ${profile.name}`)}
-                className="px-4 py-2 rounded-xl border border-slate-300 font-bold text-xs text-slate-700 hover:bg-slate-50 flex items-center space-x-1"
+                onClick={handleContact}
+                className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center space-x-1 transition-all ${
+                  isContactSent
+                    ? 'bg-emerald-600 text-white border border-emerald-600'
+                    : 'border border-slate-300 text-slate-700 hover:bg-slate-50'
+                }`}
               >
-                <Mail className="w-3.5 h-3.5" />
-                <span>Contact Candidate</span>
+                {isContactSent ? (
+                  <>
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>✓ Request Sent</span>
+                  </>
+                ) : (
+                  <>
+                    <Mail className="w-3.5 h-3.5" />
+                    <span>Contact Candidate</span>
+                  </>
+                )}
               </button>
 
               <button

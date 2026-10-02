@@ -13,6 +13,7 @@ export default function DirectoryPage() {
   const [qualFilter, setQualFilter] = useState<string>('ALL');
   const [onlyAvailable, setOnlyAvailable] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState<ProfessionalProfile | null>(null);
+  const [inviteSentName, setInviteSentName] = useState<string | null>(null);
 
   const intentRoles = ['ALL', 'CA', 'CMA', 'CS', 'Auditor', 'Accountant', 'Tax Expert', 'CFO'];
 
@@ -29,9 +30,26 @@ export default function DirectoryPage() {
     return matchesSearch && matchesQual && matchesAvailable;
   });
 
+  const handleInvite = (p: ProfessionalProfile) => {
+    setInviteSentName(p.name);
+    setTimeout(() => {
+      setInviteSentName(null);
+    }, 3000);
+  };
+
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-16 pt-2">
       
+      {inviteSentName && (
+        <div className="bg-emerald-600 text-white p-3.5 rounded-2xl shadow-lg flex items-center justify-between text-xs font-extrabold animate-in fade-in slide-in-from-top-2">
+          <div className="flex items-center space-x-2">
+            <CheckCircle2 className="w-4 h-4 text-white" />
+            <span>Job Invitation Sent to {inviteSentName} via Platform Intermediary Inbox</span>
+          </div>
+          <button onClick={() => setInviteSentName(null)} className="text-white/80 hover:text-white font-bold">Dismiss</button>
+        </div>
+      )}
+
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 border-b border-slate-200 pb-4">
         <div>
@@ -106,7 +124,7 @@ export default function DirectoryPage() {
       <MiniCvModal
         profile={selectedProfile}
         onClose={() => setSelectedProfile(null)}
-        onInviteToJob={(p) => alert(`Job invitation sent to ${p.name}`)}
+        onInviteToJob={handleInvite}
       />
 
     </div>

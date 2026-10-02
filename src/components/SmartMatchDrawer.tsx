@@ -34,11 +34,19 @@ export const SmartMatchDrawer: React.FC<SmartMatchDrawerProps> = ({
   onOpenMiniCv
 }) => {
   const { buyRequests, professionals } = useApp();
+  const [actionSuccessId, setActionSuccessId] = React.useState<string | null>(null);
 
   if (!isOpen || !item) return null;
 
   const companyMatches = type === 'COMPANY' ? matchCompanyWithBuyers(item as CompanyListing, buyRequests) : [];
   const jobMatches = type === 'JOB' ? matchJobWithProfessionals(item as JobListing, professionals) : [];
+
+  const handleAction = (id: string) => {
+    setActionSuccessId(id);
+    setTimeout(() => {
+      setActionSuccessId(null);
+    }, 2500);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex justify-end bg-slate-950/60 backdrop-blur-xs animate-in fade-in duration-200">
@@ -119,11 +127,24 @@ export const SmartMatchDrawer: React.FC<SmartMatchDrawerProps> = ({
 
                     <div className="pt-1 flex justify-end">
                       <button
-                        onClick={() => alert(`Connecting with Buyer ${buyerRequest.buyerName} via FinExchange Inbox...`)}
-                        className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center space-x-1.5"
+                        onClick={() => handleAction(buyerRequest.id)}
+                        className={`px-4 py-2 rounded-xl font-bold text-xs flex items-center space-x-1.5 transition-all ${
+                          actionSuccessId === buyerRequest.id
+                            ? 'bg-emerald-600 text-white'
+                            : 'bg-slate-900 hover:bg-slate-800 text-white'
+                        }`}
                       >
-                        <span>Connect with Buyer</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
+                        {actionSuccessId === buyerRequest.id ? (
+                          <>
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <span>✓ Connected via Platform</span>
+                          </>
+                        ) : (
+                          <>
+                            <span>Connect with Buyer</span>
+                            <ArrowRight className="w-3.5 h-3.5" />
+                          </>
+                        )}
                       </button>
                     </div>
                   </div>
@@ -177,11 +198,24 @@ export const SmartMatchDrawer: React.FC<SmartMatchDrawerProps> = ({
                         </button>
                       )}
                       <button
-                        onClick={() => alert(`Job Invitation sent to ${candidate.name}`)}
-                        className="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center space-x-1"
+                        onClick={() => handleAction(candidate.id)}
+                        className={`px-4 py-1.5 rounded-xl font-bold text-xs flex items-center space-x-1 transition-all ${
+                          actionSuccessId === candidate.id
+                            ? 'bg-emerald-600 text-white'
+                            : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+                        }`}
                       >
-                        <Send className="w-3.5 h-3.5" />
-                        <span>Invite Candidate</span>
+                        {actionSuccessId === candidate.id ? (
+                          <>
+                            <CheckCircle2 className="w-3.5 h-3.5" />
+                            <span>✓ Invitation Sent</span>
+                          </>
+                        ) : (
+                          <>
+                            <Send className="w-3.5 h-3.5" />
+                            <span>Invite Candidate</span>
+                          </>
+                        )}
                       </button>
                     </div>
                   </div>

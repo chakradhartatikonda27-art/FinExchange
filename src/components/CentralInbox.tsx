@@ -2,21 +2,33 @@
 
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
-import { MessageSquare, Building2, Briefcase, Lock, CheckCircle2, Send } from 'lucide-react';
+import { MessageSquare, Building2, Briefcase, Send } from 'lucide-react';
 
 export const CentralInbox: React.FC = () => {
   const { enquiries, applications, approveNdaAccess } = useApp();
   const [activeTab, setActiveTab] = useState<'ENQUIRIES' | 'APPLICATIONS'>('ENQUIRIES');
   const [selectedEnquiryId, setSelectedEnquiryId] = useState<string>(enquiries[0]?.id || '');
   const [replyMessage, setReplyMessage] = useState('');
+  const [threadMessages, setThreadMessages] = useState<Record<string, { sender: string; text: string; time: string }[]>>({});
+  const [unlockedNdaIds, setUnlockedNdaIds] = useState<string[]>([]);
 
   const selectedEnquiry = enquiries.find(e => e.id === selectedEnquiryId) || enquiries[0];
 
   const handleSendReply = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!replyMessage.trim()) return;
-    alert(`Reply sent to ${selectedEnquiry?.buyerName}: "${replyMessage}"`);
+    if (!replyMessage.trim() || !selectedEnquiry) return;
+
+    const newMsg = { sender: 'You (Seller / Platform)', text: replyMessage, time: 'Just now' };
+    setThreadMessages(prev => ({
+      ...prev,
+      [selectedEnquiry.id]: [...(prev[selectedEnquiry.id] || []), newMsg]
+    }));
     setReplyMessage('');
+  };
+
+  const handleUnlockNda = (companyId: string) => {
+    approveNdaAccess(companyId);
+    setUnlockedNdaIds(prev => [...prev, companyId]);
   };
 
   return (
@@ -103,25 +115,36 @@ export const CentralInbox: React.FC = () => {
 
                 <div className="text-right">
                   <span className="text-xs font-extrabold text-emerald-700 block">{selectedEnquiry.proposedPrice}</span>
-                  <button
-                    onClick={() => {
-                      approveNdaAccess(selectedEnquiry.companyId);
-                      alert(`Granted NDA Document Access for ${selectedEnquiry.companyTitle}`);
-                    }}
-                    className="mt-1 px-3 py-1 rounded bg-slate-900 hover:bg-slate-800 text-white font-bold text-[10px]"
-                  >
-                    Unlock NDA Vault
-                  </button>
+                  {unlockedNdaIds.includes(selectedEnquiry.companyId) || selectedEnquiry.status === 'DOCUMENT_ACCESS_GRANTED' ? (
+                    <span className="mt-1 inline-block px-3 py-1 rounded bg-emerald-100 text-emerald-800 font-extrabold text-[10px]">
+                      ✓ NDA Vault Unlocked
+                    </span>
+                  ) : (
+                    <button
+                      onClick={() => handleUnlockNda(selectedEnquiry.companyId)}
+                      className="mt-1 px-3 py-1 rounded bg-slate-900 hover:bg-slate-800 text-white font-bold text-[10px]"
+                    >
+                      Unlock NDA Vault
+                    </button>
+                  )}
                 </div>
               </div>
 
-              {/* Message Bubble */}
-              <div className="space-y-2">
+              {/* Message Bubbles */}
+              <div className="space-y-3 max-h-[240px] overflow-y-auto">
                 <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-2xl max-w-xl text-xs space-y-1">
                   <p className="font-bold text-slate-900">{selectedEnquiry.buyerName}</p>
                   <p className="text-slate-800 leading-relaxed">{selectedEnquiry.message}</p>
                   <span className="text-[10px] text-slate-400 block pt-1">{selectedEnquiry.submittedAt}</span>
                 </div>
+
+                {(threadMessages[selectedEnquiry.id] || []).map((msg, idx) => (
+                  <div key={idx} className="bg-slate-900 text-white p-4 rounded-2xl max-w-xl text-xs space-y-1 ml-auto">
+                    <p className="font-bold text-emerald-400">{msg.sender}</p>
+                    <p className="text-slate-200 leading-relaxed">{msg.text}</p>
+                    <span className="text-[10px] text-slate-400 block pt-1">{msg.time}</span>
+                  </div>
+                ))}
               </div>
             </div>
 

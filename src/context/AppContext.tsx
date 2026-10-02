@@ -372,7 +372,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setComparedCompanyIds(prev => {
       if (prev.includes(companyId)) return prev.filter(id => id !== companyId);
       if (prev.length >= 3) {
-        alert('You can compare a maximum of 3 companies simultaneously.');
         return prev;
       }
       return [...prev, companyId];
