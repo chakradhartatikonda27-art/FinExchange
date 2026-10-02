@@ -35,6 +35,7 @@ export default function DashboardPage() {
     companies, 
     applications, 
     enquiries, 
+    termSheets,
     buyRequests, 
     savedJobIds, 
     savedCompanyIds, 
@@ -438,6 +439,26 @@ export default function DashboardPage() {
                     </div>
                     <span className="px-3 py-1 rounded-full font-bold bg-amber-100 text-amber-900">
                       Status: {enq.status}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              {/* M&A Term Sheets Section */}
+              <div className="pt-4 border-t border-slate-200 space-y-3">
+                <h4 className="text-xs font-black text-slate-900 uppercase tracking-wider flex items-center space-x-1.5">
+                  <FileText className="w-4 h-4 text-emerald-600" />
+                  <span>Submitted Non-Binding LOI Term Sheets ({termSheets.length})</span>
+                </h4>
+                {termSheets.map(loi => (
+                  <div key={loi.id} className="p-4 bg-slate-900 text-white rounded-2xl border border-slate-800 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-xs">
+                    <div>
+                      <span className="font-extrabold text-emerald-400 text-sm block">{loi.companyTitle}</span>
+                      <span className="text-slate-300">Valuation Offer: {loi.proposedValuationDisplay} • Due Diligence: {loi.dueDiligenceDays} Days</span>
+                      <p className="text-slate-400 mt-1">Escrow: {loi.escrowPercent}% • Earnout: {loi.earnoutStructure}</p>
+                    </div>
+                    <span className="px-3 py-1 rounded-full text-[11px] font-extrabold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                      {loi.status}
                     </span>
                   </div>
                 ))}

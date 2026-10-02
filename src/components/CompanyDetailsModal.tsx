@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { CompanyListing } from '../types';
 import { SecureDocumentRoomModal } from './SecureDocumentRoomModal';
+import { TermSheetGeneratorModal } from './TermSheetGeneratorModal';
 import { 
   Building2, 
   Calendar, 
@@ -27,6 +28,7 @@ interface CompanyDetailsModalProps {
 export const CompanyDetailsModal: React.FC<CompanyDetailsModalProps> = ({ company, onClose, onEnquire }) => {
   const { requestNdaAccess } = useApp();
   const [isVaultModalOpen, setIsVaultModalOpen] = useState(false);
+  const [isTermSheetModalOpen, setIsTermSheetModalOpen] = useState(false);
 
   if (!company) return null;
 
@@ -154,19 +156,28 @@ export const CompanyDetailsModal: React.FC<CompanyDetailsModalProps> = ({ compan
             </div>
 
             {/* CTA Footer */}
-            <div className="pt-3 border-t border-slate-200 flex justify-end space-x-2">
+            <div className="pt-3 border-t border-slate-200 flex flex-wrap justify-end gap-2">
               <button
                 onClick={onClose}
                 className="px-4 py-2 rounded-xl border border-slate-300 text-xs font-semibold text-slate-600 hover:bg-slate-50"
               >
                 Close
               </button>
+
+              <button
+                onClick={() => setIsTermSheetModalOpen(true)}
+                className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center space-x-1.5 shadow-xs"
+              >
+                <FileText className="w-4 h-4 text-emerald-400" />
+                <span>Generate M&A Term Sheet / LOI</span>
+              </button>
+
               <button
                 onClick={() => {
                   onClose();
                   onEnquire(company);
                 }}
-                className="px-6 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center space-x-1 shadow-md shadow-emerald-600/20"
+                className="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center space-x-1 shadow-md shadow-emerald-600/20"
               >
                 <span>Send Acquisition Enquiry</span>
                 <ArrowUpRight className="w-4 h-4" />
@@ -182,6 +193,13 @@ export const CompanyDetailsModal: React.FC<CompanyDetailsModalProps> = ({ compan
         company={company}
         isOpen={isVaultModalOpen}
         onClose={() => setIsVaultModalOpen(false)}
+      />
+
+      {/* Term Sheet / LOI Generator Modal */}
+      <TermSheetGeneratorModal
+        company={company}
+        isOpen={isTermSheetModalOpen}
+        onClose={() => setIsTermSheetModalOpen(false)}
       />
     </>
   );

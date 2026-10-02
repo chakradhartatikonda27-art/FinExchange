@@ -54,6 +54,38 @@ export interface CompanyDocumentItem {
   maskedAccessNotice?: string;
 }
 
+export interface IcaiCredentialDetails {
+  membershipNumber: string;
+  membershipType: 'FCA' | 'ACA' | 'FCS' | 'FCMA' | 'DISA';
+  copStatus: 'ACTIVE_PRACTICING' | 'NON_PRACTICING';
+  peerReviewCertificateNo?: string;
+  peerReviewStatus: 'VERIFIED_COMPLIANT' | 'NOT_APPLICABLE';
+  frnNumber?: string;
+  firmName?: string;
+  verifiedAt: string;
+}
+
+export interface TermSheetLOI {
+  id: string;
+  companyId: string;
+  companyTitle: string;
+  sellerId: string;
+  buyerId: string;
+  buyerName: string;
+  buyerEmail: string;
+  buyerPhone: string;
+  proposedValuation: number;
+  proposedValuationDisplay: string;
+  dueDiligenceDays: number;
+  exclusivityDays: number;
+  workingCapitalTarget?: string;
+  earnoutStructure?: string;
+  escrowPercent: number;
+  status: 'SUBMITTED_LOI' | 'UNDER_SELLER_REVIEW' | 'ACCEPTED' | 'REJECTED';
+  submittedAt: string;
+  ndaSigned: boolean;
+}
+
 export interface User {
   id: string;
   fullName: string;
@@ -68,6 +100,7 @@ export interface User {
   entitlements: EntitlementPermission[];
   isIdentityVerified: boolean;
   icaiNumber?: string;
+  icaiDetails?: IcaiCredentialDetails;
   companyName?: string;
   createdAt: string;
 }
@@ -140,6 +173,9 @@ export interface CompanyListing {
   registeredState: string;
   askingPrice: number;
   askingPriceDisplay: string;
+  evRevenueMultiple?: string;
+  debtStatus?: string;
+  workingCapitalStatus?: string;
   businessStatus: 'Active Business' | 'Dormant Company' | 'Shell Entity' | 'Clean Track Record';
   annualTurnover?: string;
   employeeCount?: string;

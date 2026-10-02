@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState } from 'react';
-import { User, UserRole, WorkspaceRole, SubscriptionTier, JobListing, CompanyListing, ProfessionalProfile, AcquisitionRequest, JobApplication, CompanyEnquiry, NotificationItem, SavedSearch, ApplicationStage } from '../types';
+import { User, UserRole, WorkspaceRole, SubscriptionTier, JobListing, CompanyListing, ProfessionalProfile, AcquisitionRequest, JobApplication, CompanyEnquiry, NotificationItem, SavedSearch, ApplicationStage, TermSheetLOI } from '../types';
 import { INITIAL_USER, SEED_JOBS, SEED_COMPANIES, SEED_BUY_REQUESTS, SEED_PROFESSIONALS } from '../lib/seedData';
 import { sanitizeJobListing, sanitizeCompanyListing } from '../lib/accessControl';
 
@@ -17,6 +17,7 @@ interface AppContextType {
   professionals: ProfessionalProfile[];
   applications: JobApplication[];
   enquiries: CompanyEnquiry[];
+  termSheets: TermSheetLOI[];
   savedJobIds: string[];
   savedCompanyIds: string[];
   comparedCompanyIds: string[];
@@ -28,6 +29,8 @@ interface AppContextType {
   applyForJob: (jobId: string, coverNote?: string) => boolean;
   updateApplicationStage: (appId: string, stage: ApplicationStage) => void;
   submitCompanyEnquiry: (companyId: string, message: string, proposedPrice?: string) => boolean;
+  submitTermSheet: (data: Partial<TermSheetLOI>) => TermSheetLOI;
+  updateTermSheetStatus: (id: string, status: TermSheetLOI['status']) => void;
   requestNdaAccess: (companyId: string) => void;
   approveNdaAccess: (companyId: string) => void;
   toggleSaveJob: (jobId: string) => void;
@@ -97,6 +100,29 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       message: 'We are interested in acquiring this IT entity for immediate IT bidding. Please grant ROC document vault access.',
       submittedAt: 'Yesterday',
       status: 'PENDING'
+    }
+  ]);
+
+  const [termSheets, setTermSheets] = useState<TermSheetLOI[]>([
+    {
+      id: 'loi-301',
+      companyId: 'comp-sale-01',
+      companyTitle: '2019 Registered Private Limited IT Services Company',
+      sellerId: 'usr-001',
+      buyerId: 'usr-008',
+      buyerName: 'Anand Varma (Angel Investor)',
+      buyerEmail: 'anand.v@capitalpartner.in',
+      buyerPhone: '+91 98765 43210',
+      proposedValuation: 2450000,
+      proposedValuationDisplay: '₹24.5 Lakhs',
+      dueDiligenceDays: 30,
+      exclusivityDays: 45,
+      workingCapitalTarget: 'Zero Liability & ₹5.0L Net Working Capital',
+      earnoutStructure: '80% Upon ROC Transfer, 20% at 6 Months',
+      escrowPercent: 10,
+      status: 'SUBMITTED_LOI',
+      submittedAt: 'Yesterday',
+      ndaSigned: true
     }
   ]);
 
@@ -294,6 +320,37 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return true;
   };
 
+  const submitTermSheet = (data: Partial<TermSheetLOI>): TermSheetLOI => {
+    const comp = companies.find(c => c.id === data.companyId);
+    const newLoi: TermSheetLOI = {
+      id: `loi-${Date.now()}`,
+      companyId: data.companyId || 'comp-unknown',
+      companyTitle: data.companyTitle || comp?.listingTitle || 'Acquisition Target',
+      sellerId: comp?.sellerId || 'usr-seller',
+      buyerId: currentUser.id,
+      buyerName: currentUser.fullName,
+      buyerEmail: currentUser.email,
+      buyerPhone: currentUser.phone,
+      proposedValuation: data.proposedValuation || comp?.askingPrice || 2500000,
+      proposedValuationDisplay: data.proposedValuationDisplay || `₹${((data.proposedValuation || 2500000) / 100000).toFixed(1)} Lakhs`,
+      dueDiligenceDays: data.dueDiligenceDays || 30,
+      exclusivityDays: data.exclusivityDays || 45,
+      workingCapitalTarget: data.workingCapitalTarget || 'Zero Debt Target',
+      earnoutStructure: data.earnoutStructure || '80% Upfront, 20% Earnout',
+      escrowPercent: data.escrowPercent || 10,
+      status: 'SUBMITTED_LOI',
+      submittedAt: 'Just now',
+      ndaSigned: true
+    };
+
+    setTermSheets(prev => [newLoi, ...prev]);
+    return newLoi;
+  };
+
+  const updateTermSheetStatus = (id: string, status: TermSheetLOI['status']) => {
+    setTermSheets(prev => prev.map(loi => loi.id === id ? { ...loi, status } : loi));
+  };
+
   const requestNdaAccess = (companyId: string) => {
     setCompanies(prev => prev.map(c => c.id === companyId ? { ...c, ndaStatus: 'REQUESTED' } : c));
   };
@@ -372,6 +429,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         professionals,
         applications,
         enquiries,
+        termSheets,
         savedJobIds,
         savedCompanyIds,
         comparedCompanyIds,
@@ -383,6 +441,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         applyForJob,
         updateApplicationStage,
         submitCompanyEnquiry,
+        submitTermSheet,
+        updateTermSheetStatus,
         requestNdaAccess,
         approveNdaAccess,
         toggleSaveJob,
