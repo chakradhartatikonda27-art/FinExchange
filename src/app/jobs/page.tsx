@@ -55,7 +55,7 @@ export default function JobsPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search job title or company..."
-              className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs font-medium"
+              className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-base sm:text-xs font-medium"
             />
           </div>
 
@@ -63,7 +63,7 @@ export default function JobsPage() {
             <select
               value={locationFilter}
               onChange={(e) => setLocationFilter(e.target.value)}
-              className="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white"
+              className="w-full p-2.5 rounded-xl border border-slate-300 text-base sm:text-xs font-semibold bg-white"
             >
               <option value="ALL">All Locations</option>
               <option value="Hyderabad">Hyderabad</option>
@@ -77,7 +77,7 @@ export default function JobsPage() {
             <select
               value={qualFilter}
               onChange={(e) => setQualFilter(e.target.value)}
-              className="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white"
+              className="w-full p-2.5 rounded-xl border border-slate-300 text-base sm:text-xs font-semibold bg-white"
             >
               <option value="ALL">All Qualifications</option>
               <option value="CA">Chartered Accountant (CA)</option>
@@ -90,13 +90,13 @@ export default function JobsPage() {
         </div>
 
         {/* Category Pills */}
-        <div className="flex items-center space-x-2 pt-2 border-t border-slate-100">
-          <span className="text-xs font-bold text-slate-500">Job Type:</span>
+        <div className="flex items-center space-x-2 pt-2 border-t border-slate-100 overflow-x-auto no-scrollbar touch-pan-x pb-0.5">
+          <span className="text-xs font-bold text-slate-500 shrink-0">Job Type:</span>
           {(['ALL', 'JOB', 'INTERNSHIP'] as const).map(cat => (
             <button
               key={cat}
               onClick={() => setCategoryFilter(cat)}
-              className={`px-3 py-1 rounded-lg text-xs font-semibold transition-colors ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors shrink-0 touch-manipulation ${
                 categoryFilter === cat ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
               }`}
             >

@@ -112,13 +112,13 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCreateModal }) => {
             <div className="relative" ref={dropdownRef}>
               <button
                 onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="flex items-center space-x-1.5 px-3 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-800 transition-all shadow-2xs"
+                className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-bold text-slate-800 transition-all shadow-2xs touch-manipulation"
                 title="Switch Workspace Intent"
               >
-                <ActiveIcon className="w-3.5 h-3.5 text-slate-700" />
-                <span className="hidden xs:inline">{currentConfig.label}</span>
-                <span className="xs:hidden">{currentConfig.badge}</span>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-0.5" />
+                <ActiveIcon className="w-3.5 h-3.5 text-slate-700 shrink-0" />
+                <span className="hidden sm:inline">{currentConfig.label}</span>
+                <span className="sm:hidden text-[11px] font-extrabold">{currentConfig.badge}</span>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400 ml-0.5 shrink-0" />
               </button>
 
               {isDropdownOpen && (

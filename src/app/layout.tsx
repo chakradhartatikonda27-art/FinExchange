@@ -31,7 +31,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <title>FinExchange - CA, CS, CMA & Business Acquisition Engine</title>
         <meta name="description" content="Professional network marketplace for CAs, CMAs, CSs, finance jobs, and company acquisitions." />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="theme-color" content="#0f172a" />
         <link rel="manifest" href="/manifest.json" />
       </head>
       <body className="bg-slate-50 min-h-screen flex flex-col pb-16 md:pb-0">

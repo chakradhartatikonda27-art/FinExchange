@@ -68,7 +68,7 @@ export default function CompaniesPage() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search industry or city (e.g. 2019 Pvt Ltd IT Hyderabad)..."
-            className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs font-medium"
+            className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-base sm:text-xs font-medium"
           />
         </div>
 
@@ -76,7 +76,7 @@ export default function CompaniesPage() {
           <select
             value={industryFilter}
             onChange={(e) => setIndustryFilter(e.target.value)}
-            className="w-full p-2.5 rounded-xl border border-slate-300 text-xs font-semibold bg-white"
+            className="w-full p-2.5 rounded-xl border border-slate-300 text-base sm:text-xs font-semibold bg-white"
           >
             <option value="ALL">All Industry Sectors</option>
             <option value="IT & Software">IT & Software</option>

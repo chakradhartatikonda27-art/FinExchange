@@ -73,7 +73,7 @@ export default function DirectoryPage() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search by name, expertise or skill (e.g. Statutory Audit, Direct Tax)..."
-              className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-xs font-medium"
+              className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-300 text-base sm:text-xs font-medium"
             />
           </div>
 
@@ -92,13 +92,13 @@ export default function DirectoryPage() {
         </div>
 
         {/* Intent Search Pills */}
-        <div className="flex items-center space-x-2 pt-2 border-t border-slate-100 overflow-x-auto no-scrollbar">
-          <span className="text-xs font-bold text-slate-500 flex-shrink-0">I'm looking for:</span>
+        <div className="flex items-center space-x-2 pt-2 border-t border-slate-100 overflow-x-auto no-scrollbar touch-pan-x pb-0.5">
+          <span className="text-xs font-bold text-slate-500 shrink-0">I'm looking for:</span>
           {intentRoles.map(role => (
             <button
               key={role}
               onClick={() => setQualFilter(role)}
-              className={`px-3 py-1 rounded-lg text-xs font-bold transition-colors flex-shrink-0 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-colors shrink-0 touch-manipulation ${
                 qualFilter === role ? 'bg-slate-900 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
               }`}
             >

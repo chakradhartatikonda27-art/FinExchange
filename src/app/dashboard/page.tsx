@@ -178,10 +178,10 @@ export default function DashboardPage() {
           </div>
 
           {/* Sub Navigation Bar */}
-          <div className="bg-white rounded-2xl p-1.5 border border-slate-200 shadow-2xs flex items-center space-x-2">
+          <div className="bg-white rounded-2xl p-1.5 border border-slate-200 shadow-2xs flex items-center space-x-2 overflow-x-auto no-scrollbar touch-pan-x">
             <button
               onClick={() => setCandidateSubTab('APPLICATIONS')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 touch-manipulation ${
                 candidateSubTab === 'APPLICATIONS' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -190,7 +190,7 @@ export default function DashboardPage() {
 
             <button
               onClick={() => setCandidateSubTab('SAVED_JOBS')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 touch-manipulation ${
                 candidateSubTab === 'SAVED_JOBS' ? 'bg-emerald-600 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -199,7 +199,7 @@ export default function DashboardPage() {
 
             <button
               onClick={() => setCandidateSubTab('INBOX')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 touch-manipulation ${
                 candidateSubTab === 'INBOX' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -268,10 +268,10 @@ export default function DashboardPage() {
       ------------------------------------------------------------- */}
       {activeWorkspace === 'RECRUITER' && (
         <div className="space-y-6">
-          <div className="bg-white rounded-2xl p-1.5 border border-slate-200 shadow-2xs flex items-center space-x-2">
+          <div className="bg-white rounded-2xl p-1.5 border border-slate-200 shadow-2xs flex items-center space-x-2 overflow-x-auto no-scrollbar touch-pan-x">
             <button
               onClick={() => setRecruiterSubTab('ATS_BOARD')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 touch-manipulation ${
                 recruiterSubTab === 'ATS_BOARD' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -280,7 +280,7 @@ export default function DashboardPage() {
 
             <button
               onClick={() => setRecruiterSubTab('POSTED_JOBS')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 touch-manipulation ${
                 recruiterSubTab === 'POSTED_JOBS' ? 'bg-emerald-600 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -289,7 +289,7 @@ export default function DashboardPage() {
 
             <button
               onClick={() => setRecruiterSubTab('INBOX')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 touch-manipulation ${
                 recruiterSubTab === 'INBOX' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -332,10 +332,10 @@ export default function DashboardPage() {
       ------------------------------------------------------------- */}
       {activeWorkspace === 'PROFESSIONAL' && (
         <div className="space-y-6">
-          <div className="bg-white rounded-2xl p-1.5 border border-slate-200 shadow-2xs flex items-center space-x-2">
+          <div className="bg-white rounded-2xl p-1.5 border border-slate-200 shadow-2xs flex items-center space-x-2 overflow-x-auto no-scrollbar touch-pan-x">
             <button
               onClick={() => setProfessionalSubTab('MINI_CV')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 touch-manipulation ${
                 professionalSubTab === 'MINI_CV' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -344,7 +344,7 @@ export default function DashboardPage() {
 
             <button
               onClick={() => setProfessionalSubTab('INVITATIONS')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 touch-manipulation ${
                 professionalSubTab === 'INVITATIONS' ? 'bg-purple-600 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -353,7 +353,7 @@ export default function DashboardPage() {
 
             <button
               onClick={() => setProfessionalSubTab('INBOX')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 touch-manipulation ${
                 professionalSubTab === 'INBOX' ? 'bg-blue-600 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -426,10 +426,10 @@ export default function DashboardPage() {
       ------------------------------------------------------------- */}
       {activeWorkspace === 'COMPANY_BUYER' && (
         <div className="space-y-6">
-          <div className="bg-white rounded-2xl p-1.5 border border-slate-200 shadow-2xs flex items-center space-x-2">
+          <div className="bg-white rounded-2xl p-1.5 border border-slate-200 shadow-2xs flex items-center space-x-2 overflow-x-auto no-scrollbar touch-pan-x">
             <button
               onClick={() => setBuyerSubTab('ENQUIRIES')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 touch-manipulation ${
                 buyerSubTab === 'ENQUIRIES' ? 'bg-amber-600 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -438,7 +438,7 @@ export default function DashboardPage() {
 
             <button
               onClick={() => setBuyerSubTab('SAVED_COMPANIES')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 touch-manipulation ${
                 buyerSubTab === 'SAVED_COMPANIES' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
@@ -447,7 +447,7 @@ export default function DashboardPage() {
 
             <button
               onClick={() => setBuyerSubTab('BUY_MANDATES')}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+              className={`px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap shrink-0 touch-manipulation ${
                 buyerSubTab === 'BUY_MANDATES' ? 'bg-emerald-600 text-white' : 'text-slate-600 hover:bg-slate-100'
               }`}
             >
