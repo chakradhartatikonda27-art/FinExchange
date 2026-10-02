@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { CompanyListing } from '../types';
 import { SecureDocumentRoomModal } from './SecureDocumentRoomModal';
 import { TermSheetGeneratorModal } from './TermSheetGeneratorModal';
+import { SmartMatchDrawer } from './SmartMatchDrawer';
 import { 
   Building2, 
   Calendar, 
@@ -15,7 +16,8 @@ import {
   FileText, 
   CheckCircle2,
   Shield,
-  MessageSquare
+  MessageSquare,
+  Zap
 } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
@@ -29,6 +31,7 @@ export const CompanyDetailsModal: React.FC<CompanyDetailsModalProps> = ({ compan
   const { requestNdaAccess } = useApp();
   const [isVaultModalOpen, setIsVaultModalOpen] = useState(false);
   const [isTermSheetModalOpen, setIsTermSheetModalOpen] = useState(false);
+  const [isMatchDrawerOpen, setIsMatchDrawerOpen] = useState(false);
 
   if (!company) return null;
 
@@ -165,6 +168,14 @@ export const CompanyDetailsModal: React.FC<CompanyDetailsModalProps> = ({ compan
               </button>
 
               <button
+                onClick={() => setIsMatchDrawerOpen(true)}
+                className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center space-x-1.5 shadow-xs"
+              >
+                <Zap className="w-4 h-4 text-emerald-200 fill-emerald-200" />
+                <span>⚡ View Matching Buyers</span>
+              </button>
+
+              <button
                 onClick={() => setIsTermSheetModalOpen(true)}
                 className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs flex items-center space-x-1.5 shadow-xs"
               >
@@ -200,6 +211,14 @@ export const CompanyDetailsModal: React.FC<CompanyDetailsModalProps> = ({ compan
         company={company}
         isOpen={isTermSheetModalOpen}
         onClose={() => setIsTermSheetModalOpen(false)}
+      />
+
+      {/* 2-Way AI Matching Drawer */}
+      <SmartMatchDrawer
+        item={company}
+        type="COMPANY"
+        isOpen={isMatchDrawerOpen}
+        onClose={() => setIsMatchDrawerOpen(false)}
       />
     </>
   );

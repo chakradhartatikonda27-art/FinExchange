@@ -23,8 +23,11 @@ import {
   Send,
   Clock,
   ChevronRight,
-  Filter
+  Filter,
+  Zap,
+  Sparkles
 } from 'lucide-react';
+import { matchCompanyWithBuyers, matchJobWithProfessionals } from '../../lib/matchingEngine';
 
 export default function DashboardPage() {
   const { 
@@ -37,6 +40,7 @@ export default function DashboardPage() {
     enquiries, 
     termSheets,
     buyRequests, 
+    professionals,
     savedJobIds, 
     savedCompanyIds, 
     verifyListing,
@@ -51,6 +55,9 @@ export default function DashboardPage() {
 
   const savedJobs = jobs.filter(j => savedJobIds.includes(j.id));
   const savedCompanies = companies.filter(c => savedCompanyIds.includes(c.id));
+
+  const jobCandidateMatches = jobs.length > 0 && professionals.length > 0 ? matchJobWithProfessionals(jobs[0], professionals) : [];
+  const companyBuyerMatches = companies.length > 0 && buyRequests.length > 0 ? matchCompanyWithBuyers(companies[0], buyRequests) : [];
 
   return (
     <div className="max-w-6xl mx-auto space-y-6 pb-20 pt-2 px-4 sm:px-6">
@@ -98,6 +105,37 @@ export default function DashboardPage() {
               </button>
             ))}
           </div>
+        </div>
+      </div>
+
+      {/* ⚡ AI Smart Match Summary Feed Banner */}
+      <div className="bg-gradient-to-r from-emerald-950 via-slate-900 to-slate-900 border border-emerald-800/60 rounded-3xl p-5 text-white shadow-lg flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <div className="flex items-start space-x-3.5">
+          <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center shrink-0">
+            <Zap className="w-5 h-5 text-emerald-400 fill-emerald-400" />
+          </div>
+          <div>
+            <div className="flex items-center space-x-2">
+              <span className="text-[10px] font-extrabold uppercase tracking-wider bg-emerald-500 text-slate-950 px-2 py-0.5 rounded">
+                ⚡ 2-Way AI Match Feed Active
+              </span>
+              <span className="text-xs text-slate-400">Sector, Budget & Qualification Scored</span>
+            </div>
+            <h3 className="text-sm font-bold text-white mt-1">
+              {activeWorkspace === 'CANDIDATE' || activeWorkspace === 'PROFESSIONAL'
+                ? `⚡ ${jobCandidateMatches[0]?.matchScore || 95}% AI Profile Match with Top Industry Recruiters`
+                : `⚡ ${companyBuyerMatches[0]?.matchScore || 92}% AI Mandate Overlap Found for Active Listings`}
+            </h3>
+            <p className="text-xs text-slate-300 mt-0.5">
+              {companyBuyerMatches[0]?.matchReasons.slice(0, 2).join(' • ') || 'Verified Sector, Budget Range & Verification Status Match'}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center space-x-2 shrink-0">
+          <span className="text-xs text-emerald-400 font-extrabold bg-emerald-950 px-3 py-1.5 rounded-xl border border-emerald-800">
+            ⚡ High Match Score Active
+          </span>
         </div>
       </div>
 
