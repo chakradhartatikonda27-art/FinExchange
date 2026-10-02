@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { CompanyListing } from '../types';
-import { Building2, Calendar, MapPin, ShieldCheck, FileText, ArrowUpRight, Lock, CheckSquare, Square } from 'lucide-react';
+import { Building2, Calendar, MapPin, ShieldCheck, FileText, ArrowUpRight, Lock, CheckSquare, Square, Shield } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 interface CompanyCardProps {
@@ -21,13 +21,19 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company, onSelect, onE
       <div>
         {/* Top Entity Bar & Compare Checkbox */}
         <div className="flex items-center justify-between gap-2 mb-3">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1.5 flex-wrap gap-y-1">
             <span className="text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-slate-900 text-white">
               {company.companyType}
             </span>
             <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200">
               {company.businessStatus}
             </span>
+            {company.isSellerContactMasked && (
+              <span className="text-[9px] font-bold text-slate-700 bg-slate-100 border border-slate-300 px-2 py-0.5 rounded-full flex items-center space-x-0.5">
+                <Shield className="w-2.5 h-2.5 text-emerald-600" />
+                <span>Protected</span>
+              </span>
+            )}
           </div>
 
           <button
@@ -100,9 +106,9 @@ export const CompanyCard: React.FC<CompanyCardProps> = ({ company, onSelect, onE
 
         <button
           onClick={() => onEnquire(company)}
-          className="flex-1 py-2 px-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors text-center flex items-center justify-center space-x-1 shadow-sm"
+          className="py-2 px-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs flex items-center space-x-1 shadow-xs transition-colors"
         >
-          <span>Enquire</span>
+          <span>Send Enquiry</span>
           <ArrowUpRight className="w-3.5 h-3.5" />
         </button>
       </div>

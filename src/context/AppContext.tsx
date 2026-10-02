@@ -1,14 +1,16 @@
 'use client';
 
 import React, { createContext, useContext, useState } from 'react';
-import { User, UserRole, WorkspaceRole, JobListing, CompanyListing, ProfessionalProfile, AcquisitionRequest, JobApplication, CompanyEnquiry, NotificationItem, SavedSearch, ApplicationStage } from '../types';
+import { User, UserRole, WorkspaceRole, SubscriptionTier, JobListing, CompanyListing, ProfessionalProfile, AcquisitionRequest, JobApplication, CompanyEnquiry, NotificationItem, SavedSearch, ApplicationStage } from '../types';
 import { INITIAL_USER, SEED_JOBS, SEED_COMPANIES, SEED_BUY_REQUESTS, SEED_PROFESSIONALS } from '../lib/seedData';
+import { sanitizeJobListing, sanitizeCompanyListing } from '../lib/accessControl';
 
 interface AppContextType {
   currentUser: User;
   activeWorkspace: WorkspaceRole;
   switchRole: (role: UserRole) => void;
   switchWorkspace: (workspace: WorkspaceRole) => void;
+  switchSubscriptionTier: (tier: SubscriptionTier) => void;
   jobs: JobListing[];
   companies: CompanyListing[];
   buyRequests: AcquisitionRequest[];
@@ -147,6 +149,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }));
   };
 
+  const switchSubscriptionTier = (tier: SubscriptionTier) => {
+    setCurrentUser(prev => ({
+      ...prev,
+      subscriptionTier: tier
+    }));
+  };
+
   const addJob = (newJobData: Partial<JobListing>): JobListing => {
     const created: JobListing = {
       id: `job-${Date.now()}`,
@@ -180,6 +189,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const created: CompanyListing = {
       id: `comp-${Date.now()}`,
       sellerId: currentUser.id,
+      sellerName: currentUser.fullName,
+      sellerEmail: currentUser.email,
+      sellerPhone: currentUser.phone,
+      sellerContactVisibility: newCompData.sellerContactVisibility || 'PLATFORM_ONLY',
       listingTitle: newCompData.listingTitle || 'Registered Business Entity',
       companyType: newCompData.companyType || 'Private Limited',
       industry: newCompData.industry || 'IT & Software',
@@ -287,6 +300,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const approveNdaAccess = (companyId: string) => {
     setCompanies(prev => prev.map(c => c.id === companyId ? { ...c, ndaStatus: 'APPROVED' } : c));
+    setEnquiries(prev => prev.map(e => e.companyId === companyId ? { ...e, status: 'DOCUMENT_ACCESS_GRANTED' } : e));
   };
 
   const toggleSaveJob = (jobId: string) => {
@@ -336,6 +350,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setNotifications(prev => prev.map(n => n.id === id ? { ...n, isRead: true } : n));
   };
 
+  const sanitizedJobs = jobs.map(j => sanitizeJobListing(j, currentUser));
+  const sanitizedCompanies = companies.map(c => {
+    const hasApprovedNda = enquiries.some(
+      e => e.companyId === c.id && e.buyerId === currentUser.id && e.status === 'DOCUMENT_ACCESS_GRANTED'
+    );
+    return sanitizeCompanyListing(c, currentUser, hasApprovedNda);
+  });
+
   return (
     <AppContext.Provider
       value={{
@@ -343,8 +365,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         activeWorkspace,
         switchRole,
         switchWorkspace,
-        jobs,
-        companies,
+        switchSubscriptionTier,
+        jobs: sanitizedJobs,
+        companies: sanitizedCompanies,
         buyRequests,
         professionals,
         applications,

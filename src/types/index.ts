@@ -22,6 +22,38 @@ export type UserRole =
   | 'HR' 
   | 'ADMIN';
 
+export type SubscriptionTier = 
+  | 'FREE' 
+  | 'PRO_BUYER' 
+  | 'PRO_RECRUITER' 
+  | 'VERIFIED_SELLER' 
+  | 'ENTERPRISE';
+
+export type EntitlementPermission = 
+  | 'VIEW_DIRECT_CONTACT' 
+  | 'ACCESS_SECURE_DOCUMENT_VAULT' 
+  | 'FEATURE_LISTING' 
+  | 'ACCESS_CANDIDATE_DATABASE' 
+  | 'PRIORITY_INBOX_ACCESS';
+
+export type SellerContactVisibility = 
+  | 'PLATFORM_ONLY' 
+  | 'VERIFIED_BUYERS_ONLY' 
+  | 'PUBLIC';
+
+export interface CompanyDocumentItem {
+  id: string;
+  title: string;
+  type: 'INC_CERT' | 'GST_CERT' | 'ROC_RETURN' | 'AUDITED_PL' | 'TAX_CLEARANCE' | 'LEGAL_DOC';
+  fileName: string;
+  fileSize: string;
+  uploadedAt: string;
+  isConfidential: boolean;
+  ndaRequired: boolean;
+  signedAccessUrl?: string;
+  maskedAccessNotice?: string;
+}
+
 export interface User {
   id: string;
   fullName: string;
@@ -32,6 +64,8 @@ export interface User {
   activeRole: UserRole;
   activeWorkspace: WorkspaceRole;
   availableWorkspaces: WorkspaceRole[];
+  subscriptionTier: SubscriptionTier;
+  entitlements: EntitlementPermission[];
   isIdentityVerified: boolean;
   icaiNumber?: string;
   companyName?: string;
@@ -61,6 +95,11 @@ export interface JobListing {
   title: string;
   companyName: string;
   companyLogo?: string;
+  posterName?: string;
+  posterEmail?: string;
+  posterPhone?: string;
+  isContactMasked?: boolean;
+  contactMaskNotice?: string;
   category: 'JOB' | 'INTERNSHIP';
   department: 'Audit & Assurance' | 'Taxation & GST' | 'FP&A / Costing' | 'Accounting & Finance' | 'Corporate Law & Compliance' | 'Virtual CFO' | 'Internal Audit';
   jobType: 'Full-time' | 'Part-time' | 'Contract' | 'Articleship' | 'Industrial Training';
@@ -88,6 +127,12 @@ export interface CompanyListing {
   id: string;
   sellerId: string;
   listingTitle: string;
+  sellerName?: string;
+  sellerEmail?: string;
+  sellerPhone?: string;
+  sellerContactVisibility: SellerContactVisibility;
+  isSellerContactMasked?: boolean;
+  sellerContactMaskNotice?: string;
   companyType: 'Private Limited' | 'LLP' | 'Partnership Firm' | 'Proprietorship' | 'Public Limited';
   industry: 'IT & Software' | 'Pharmaceuticals' | 'Healthcare' | 'Manufacturing' | 'Financial Services' | 'Trading & Distribution' | 'Logistics' | 'Consulting';
   incorporationYear: number;
@@ -104,6 +149,7 @@ export interface CompanyListing {
   isVerified: boolean;
   verifications: VerificationLevels;
   documentsCount: number;
+  documents?: CompanyDocumentItem[];
   postedAt: string;
   enquiriesCount: number;
   rawWhatsappSource?: string;

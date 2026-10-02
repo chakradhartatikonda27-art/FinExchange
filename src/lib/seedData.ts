@@ -9,6 +9,8 @@ export const INITIAL_USER: User = {
   activeRole: 'CA',
   activeWorkspace: 'CANDIDATE',
   availableWorkspaces: ['CANDIDATE', 'RECRUITER', 'PROFESSIONAL', 'COMPANY_BUYER', 'COMPANY_SELLER'],
+  subscriptionTier: 'FREE',
+  entitlements: [],
   isIdentityVerified: true,
   icaiNumber: 'ICAI-M-402918',
   companyName: 'Sharma & Associates CA Firm',
@@ -199,6 +201,10 @@ export const SEED_COMPANIES: CompanyListing[] = [
     id: 'comp-sale-01',
     sellerId: 'usr-001',
     listingTitle: '2019 Registered Private Limited IT Services Company',
+    sellerName: 'CA Rajesh Sharma (Owner)',
+    sellerEmail: 'rajesh.sharma@ca-assoc.in',
+    sellerPhone: '+91 98490 12345',
+    sellerContactVisibility: 'PLATFORM_ONLY',
     companyType: 'Private Limited',
     industry: 'IT & Software',
     incorporationYear: 2019,
@@ -220,7 +226,39 @@ export const SEED_COMPANIES: CompanyListing[] = [
       gstVerified: true,
       documentsVerified: true
     },
-    documentsCount: 5,
+    documentsCount: 3,
+    documents: [
+      {
+        id: 'doc-inc-01',
+        title: 'ROC Certificate of Incorporation (Form 1)',
+        type: 'INC_CERT',
+        fileName: 'ROC_INC_2019_HYD_4021.pdf',
+        fileSize: '1.8 MB',
+        uploadedAt: '2024-02-10',
+        isConfidential: true,
+        ndaRequired: true
+      },
+      {
+        id: 'doc-gst-02',
+        title: 'GST REG-06 Registration Certificate',
+        type: 'GST_CERT',
+        fileName: 'GSTIN_36AAACX1234F1Z9.pdf',
+        fileSize: '850 KB',
+        uploadedAt: '2024-02-11',
+        isConfidential: true,
+        ndaRequired: true
+      },
+      {
+        id: 'doc-pl-03',
+        title: 'Audited Financial Statements & Tax Return FY24',
+        type: 'AUDITED_PL',
+        fileName: 'Audited_PL_BalanceSheet_FY24.pdf',
+        fileSize: '3.4 MB',
+        uploadedAt: '2024-03-01',
+        isConfidential: true,
+        ndaRequired: true
+      }
+    ],
     postedAt: '1 day ago',
     enquiriesCount: 14,
     ndaStatus: 'NOT_REQUESTED',
@@ -232,6 +270,10 @@ Active company clean ROC.`
   {
     id: 'comp-sale-02',
     sellerId: 'usr-006',
+    sellerName: 'Vikram Mehta (Director)',
+    sellerEmail: 'vikram.m@pharmalabs.in',
+    sellerPhone: '+91 98200 54321',
+    sellerContactVisibility: 'PLATFORM_ONLY',
     listingTitle: 'Clean Shell Pharma & Healthcare Pvt Ltd Company',
     companyType: 'Private Limited',
     industry: 'Pharmaceuticals',
@@ -266,6 +308,10 @@ Clean ROC and GST filings done`
   {
     id: 'comp-sale-03',
     sellerId: 'usr-007',
+    sellerName: 'Suresh Rao (Partner)',
+    sellerEmail: 'suresh.rao@logisticsllp.in',
+    sellerPhone: '+91 94480 87654',
+    sellerContactVisibility: 'PLATFORM_ONLY',
     listingTitle: 'Established 10-Year Old Logistics & Transport LLP',
     companyType: 'LLP',
     industry: 'Logistics',

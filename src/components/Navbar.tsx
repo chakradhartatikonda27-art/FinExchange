@@ -18,7 +18,8 @@ import {
   Search, 
   PlusCircle, 
   ShieldCheck,
-  Check
+  Check,
+  Shield
 } from 'lucide-react';
 
 interface NavbarProps {
@@ -71,7 +72,7 @@ const WORKSPACE_CONFIG: Record<WorkspaceRole, {
 
 export const Navbar: React.FC<NavbarProps> = ({ onOpenCreateModal }) => {
   const pathname = usePathname();
-  const { activeWorkspace, switchWorkspace } = useApp();
+  const { currentUser, activeWorkspace, switchWorkspace, switchSubscriptionTier } = useApp();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -213,8 +214,24 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCreateModal }) => {
             </Link>
           </nav>
 
-          {/* Primary Action Button */}
+          {/* Primary Action & Monetization Tier Switcher */}
           <div className="flex items-center space-x-2">
+            <button
+              onClick={() => {
+                const nextTier = currentUser.subscriptionTier === 'FREE' ? 'PRO_BUYER' : 'FREE';
+                switchSubscriptionTier(nextTier);
+              }}
+              className={`hidden sm:flex items-center space-x-1 px-2.5 py-1.5 rounded-xl border text-[11px] font-extrabold transition-all ${
+                currentUser.subscriptionTier === 'FREE' 
+                  ? 'bg-slate-100 text-slate-700 border-slate-300 hover:bg-slate-200' 
+                  : 'bg-emerald-100 text-emerald-900 border-emerald-300 hover:bg-emerald-200'
+              }`}
+              title="Toggle Monetization Entitlement Tier for Testing"
+            >
+              <Shield className="w-3.5 h-3.5 text-emerald-600" />
+              <span>{currentUser.subscriptionTier === 'FREE' ? 'FREE (Masked)' : 'PRO (Entitled)'}</span>
+            </button>
+
             <button
               onClick={onOpenCreateModal}
               className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-all"
