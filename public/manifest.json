@@ -1,0 +1,21 @@
+{
+  "name": "FinExchange - CA, CS, CMA & Company Marketplace",
+  "short_name": "FinExchange",
+  "description": "Professional Marketplace for CAs, CMAs, CSs, Finance Jobs, and Company Buy/Sell Acquisitions.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#F8FAFC",
+  "theme_color": "#0F172A",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
