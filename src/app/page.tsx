@@ -84,19 +84,23 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* Single Primary Search Input */}
+        {/* Single Primary Search Bar */}
         <div 
           onClick={() => setIsSearchModalOpen(true)}
-          className="max-w-2xl mx-auto bg-white rounded-2xl p-2 border-2 border-slate-200 shadow-lg flex items-center gap-2 cursor-pointer hover:border-emerald-500 transition-colors mt-6"
+          className="max-w-2xl mx-auto bg-white rounded-full sm:rounded-2xl p-2 sm:p-2.5 border-2 border-slate-200 hover:border-emerald-500 shadow-lg flex items-center justify-between cursor-pointer transition-all mt-4 sm:mt-6 group"
         >
-          <Search className="w-5 h-5 text-emerald-600 ml-3 flex-shrink-0" />
-          <span className="w-full text-sm font-medium text-slate-400 py-2 text-left">
-            Search jobs, companies, professionals (or type natural query)...
-          </span>
-          <span className="px-5 py-2.5 rounded-xl bg-slate-900 text-white font-bold text-xs flex items-center space-x-1 flex-shrink-0">
-            <span>Smart Search</span>
-            <ArrowRight className="w-4 h-4" />
-          </span>
+          <div className="flex items-center space-x-3 overflow-hidden pl-2">
+            <Search className="w-5 h-5 text-emerald-600 shrink-0 group-hover:scale-110 transition-transform" />
+            <span className="text-xs sm:text-sm font-semibold text-slate-400 truncate text-left">
+              <span className="sm:hidden">Search jobs, companies, talent...</span>
+              <span className="hidden sm:inline">Search jobs, companies, professionals (or type natural query)...</span>
+            </span>
+          </div>
+
+          <div className="px-4 py-2 sm:px-5 sm:py-2.5 rounded-full sm:rounded-xl bg-slate-900 text-white font-bold text-xs flex items-center space-x-1.5 shrink-0 shadow-sm group-hover:bg-emerald-700 transition-colors">
+            <span>Search</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </div>
         </div>
 
         {/* Trending Searches Chips */}

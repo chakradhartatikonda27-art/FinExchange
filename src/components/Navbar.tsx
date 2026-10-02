@@ -234,10 +234,11 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCreateModal }) => {
 
             <button
               onClick={onOpenCreateModal}
-              className="flex items-center space-x-1.5 px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-all"
+              className="flex items-center space-x-1.5 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition-all shrink-0 touch-manipulation"
             >
-              <Sparkles className="w-3.5 h-3.5 text-emerald-200 animate-pulse" />
-              <span>{currentConfig.ctaText}</span>
+              <Sparkles className="w-3.5 h-3.5 text-emerald-200 animate-pulse shrink-0" />
+              <span className="hidden sm:inline">{currentConfig.ctaText}</span>
+              <span className="sm:hidden">+ Post</span>
             </button>
           </div>
 
