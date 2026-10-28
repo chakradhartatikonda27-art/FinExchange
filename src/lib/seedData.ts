@@ -1,4 +1,4 @@
-import { JobListing, CompanyListing, ProfessionalProfile, AcquisitionRequest, User } from '../types';
+import { JobListing, CompanyListing, ProfessionalProfile, AcquisitionRequest, User, CommunityQuestion, TopicChannel, MarketSignalItem, ProfessionalServiceRequirement } from '../types';
 
 export const INITIAL_USER: User = {
   id: 'usr-001',
@@ -471,3 +471,118 @@ export const SEED_PROFESSIONALS: ProfessionalProfile[] = [
     servicesOffered: ['Cost Audit Reporting', 'Plant Cost Optimization', 'SAP CO Module Setup']
   }
 ];
+
+export const SEED_QUESTIONS: CommunityQuestion[] = [
+  {
+    id: 'q-101',
+    authorName: 'CA Ramesh Chandran',
+    authorRole: 'Practicing CA (Hyderabad)',
+    category: 'GST',
+    title: 'Input Tax Credit (ITC) reversal requirement for exempted turnover under Rule 42',
+    content: 'For a manufacturing unit producing both taxable and exempted goods, how should common credit on input services be apportioned under Rule 42 of CGST Rules 2017 for Q3 FY24?',
+    createdAt: '3 hours ago',
+    answersCount: 2,
+    answers: [
+      {
+        id: 'ans-1',
+        authorName: 'CA Sneha Reddy',
+        authorRole: 'Senior Tax Manager',
+        content: 'Rule 42 requires calculating D1 (credit attributed exclusively to exempted goods) and D2 (5% of common credit as turnover ratio). Ensure monthly calculations are reconciled with annual GSTR-9C filings.',
+        createdAt: '2 hours ago',
+        upvotes: 5
+      },
+      {
+        id: 'ans-2',
+        authorName: 'CMA Vikramaditya Rao',
+        authorRole: 'ACMA Cost Accountant',
+        content: 'Also verify if any capital goods ITC needs Rule 43 60-month amortization treatment.',
+        createdAt: '1 hour ago',
+        upvotes: 3
+      }
+    ]
+  },
+  {
+    id: 'q-102',
+    authorName: 'CS Priya Venkatesh',
+    authorRole: 'Practicing CS (Chennai)',
+    category: 'ROC & Companies Act',
+    title: 'Filing BEN-2 disclosure for Significant Beneficial Ownership (SBO)',
+    content: 'If an ultimate holding entity is registered in Singapore with 100% equity in an Indian Subsidiary, what supporting documents are mandatory for Form BEN-2 filing with ROC?',
+    createdAt: '1 day ago',
+    answersCount: 1,
+    answers: [
+      {
+        id: 'ans-3',
+        authorName: 'CA Kothari',
+        authorRole: 'Senior Managing Partner',
+        content: 'Attach the SBO declaration in Form BEN-1, Singapore ACRA business profile, and board resolution declaring the ultimate individual beneficiary holding >10% economic interest.',
+        createdAt: '18 hours ago',
+        upvotes: 4
+      }
+    ]
+  }
+];
+
+export const SEED_TOPICS: TopicChannel[] = [
+  { id: 'top-1', name: 'GST & Indirect Tax', category: 'Taxation', description: 'Updates on GSTR-3B, ITC Rule 42/43, GST Council decisions, & appellate tribunal rulings.', followersCount: 1420, isFollowing: true },
+  { id: 'top-2', name: 'Statutory & Internal Audit', category: 'Audit', description: 'CARO 2020 compliance, ICAI Peer Review Board standards, and CARO risk matrices.', followersCount: 980, isFollowing: true },
+  { id: 'top-3', name: 'M&A & Entity Acquisitions', category: 'Acquisition', description: 'Private Limited company buy/sell trends, EV multiples, and ROC valuation guidelines.', followersCount: 1150, isFollowing: true },
+  { id: 'top-4', name: 'ROC & Secretarial Compliance', category: 'Compliance', description: 'Companies Act 2013, Form MGT-7, AOC-4, DIR-3 KYC, and NCLT petition procedures.', followersCount: 740, isFollowing: false },
+  { id: 'top-5', name: 'FP&A & Virtual CFO Advisory', category: 'Finance', description: 'SaaS financial modeling, capital budgeting, SaaS unit economics, & startup CFO strategies.', followersCount: 1290, isFollowing: true }
+];
+
+export const SEED_MARKET_SIGNALS: MarketSignalItem[] = [
+  {
+    id: 'sig-1',
+    region: 'Hyderabad & Telangana',
+    title: 'Audit & Tax Leadership Hiring Demand',
+    metric1: '38 Active CA Openings',
+    metric2: '₹14 - 22 LPA Salary Range',
+    metric3: 'High Demand: Statutory Audit & ITAT Litigation',
+    category: 'HIRING'
+  },
+  {
+    id: 'sig-2',
+    region: 'Pan-India Tech & Services',
+    title: 'Pvt Ltd Entity Acquisition Demand',
+    metric1: '14 Active IT Buyer Mandates',
+    metric2: '₹20L - 60L Target Budget',
+    metric3: 'Top Requirement: 3+ Yrs Incorporation Vintage',
+    category: 'ACQUISITION'
+  },
+  {
+    id: 'sig-3',
+    region: 'Bengaluru & Chennai',
+    title: 'Virtual CFO & Retainership Services Demand',
+    metric1: '9 Retainership Requests',
+    metric2: '₹75,000 - 1.5L / Month',
+    metric3: 'Focus: Fintech & Plant Costing',
+    category: 'SERVICES'
+  }
+];
+
+export const SEED_SERVICE_REQUIREMENTS: ProfessionalServiceRequirement[] = [
+  {
+    id: 'srv-1',
+    posterId: 'usr-008',
+    posterName: 'Anand Varma (Angel Investor)',
+    serviceType: 'Virtual CFO',
+    industry: 'IT & Software',
+    location: 'Hyderabad / Remote',
+    budgetDisplay: '₹1.2 Lakhs / Month',
+    description: 'Seeking a qualified CA for monthly Virtual CFO retainer: investor MIS reporting, cash flow modeling, and GST/TDS oversight.',
+    postedAt: '2 days ago'
+  },
+  {
+    id: 'srv-2',
+    posterId: 'usr-009',
+    posterName: 'Solenis India Pvt Ltd',
+    serviceType: 'GST Consultant',
+    industry: 'Manufacturing',
+    location: 'Chennai',
+    budgetDisplay: '₹60,000 / Month',
+    description: 'Require a practicing CA / Tax Specialist for monthly GSTR-1 & 3B audit review, ITC reconciliation, and departmental notice responses.',
+    postedAt: 'Yesterday'
+  }
+];
+

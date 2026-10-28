@@ -1,8 +1,37 @@
 'use client';
 
 import React, { createContext, useContext, useState } from 'react';
-import { User, UserRole, WorkspaceRole, SubscriptionTier, JobListing, CompanyListing, ProfessionalProfile, AcquisitionRequest, JobApplication, CompanyEnquiry, NotificationItem, SavedSearch, ApplicationStage, TermSheetLOI } from '../types';
-import { INITIAL_USER, SEED_JOBS, SEED_COMPANIES, SEED_BUY_REQUESTS, SEED_PROFESSIONALS } from '../lib/seedData';
+import { 
+  User, 
+  UserRole, 
+  WorkspaceRole, 
+  SubscriptionTier, 
+  JobListing, 
+  CompanyListing, 
+  ProfessionalProfile, 
+  AcquisitionRequest, 
+  JobApplication, 
+  CompanyEnquiry, 
+  NotificationItem, 
+  SavedSearch, 
+  ApplicationStage, 
+  TermSheetLOI,
+  CommunityQuestion,
+  TopicChannel,
+  MarketSignalItem,
+  ProfessionalServiceRequirement
+} from '../types';
+import { 
+  INITIAL_USER, 
+  SEED_JOBS, 
+  SEED_COMPANIES, 
+  SEED_BUY_REQUESTS, 
+  SEED_PROFESSIONALS,
+  SEED_QUESTIONS,
+  SEED_TOPICS,
+  SEED_MARKET_SIGNALS,
+  SEED_SERVICE_REQUIREMENTS
+} from '../lib/seedData';
 import { sanitizeJobListing, sanitizeCompanyListing } from '../lib/accessControl';
 
 interface AppContextType {
@@ -18,6 +47,10 @@ interface AppContextType {
   applications: JobApplication[];
   enquiries: CompanyEnquiry[];
   termSheets: TermSheetLOI[];
+  communityQuestions: CommunityQuestion[];
+  topics: TopicChannel[];
+  marketSignals: MarketSignalItem[];
+  serviceRequirements: ProfessionalServiceRequirement[];
   savedJobIds: string[];
   savedCompanyIds: string[];
   comparedCompanyIds: string[];
@@ -26,6 +59,10 @@ interface AppContextType {
   addJob: (newJob: Partial<JobListing>) => JobListing;
   addCompany: (newCompany: Partial<CompanyListing>) => CompanyListing;
   addBuyRequest: (req: Partial<AcquisitionRequest>) => AcquisitionRequest;
+  addServiceRequirement: (req: Partial<ProfessionalServiceRequirement>) => ProfessionalServiceRequirement;
+  addCommunityQuestion: (title: string, category: CommunityQuestion['category'], content: string) => void;
+  addCommunityAnswer: (questionId: string, content: string) => void;
+  toggleFollowTopic: (topicId: string) => void;
   applyForJob: (jobId: string, coverNote?: string) => boolean;
   updateApplicationStage: (appId: string, stage: ApplicationStage) => void;
   submitCompanyEnquiry: (companyId: string, message: string, proposedPrice?: string) => boolean;
@@ -51,6 +88,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [companies, setCompanies] = useState<CompanyListing[]>(SEED_COMPANIES);
   const [buyRequests, setBuyRequests] = useState<AcquisitionRequest[]>(SEED_BUY_REQUESTS);
   const [professionals, setProfessionals] = useState<ProfessionalProfile[]>(SEED_PROFESSIONALS);
+  const [communityQuestions, setCommunityQuestions] = useState<CommunityQuestion[]>(SEED_QUESTIONS);
+  const [topics, setTopics] = useState<TopicChannel[]>(SEED_TOPICS);
+  const [marketSignals, setMarketSignals] = useState<MarketSignalItem[]>(SEED_MARKET_SIGNALS);
+  const [serviceRequirements, setServiceRequirements] = useState<ProfessionalServiceRequirement[]>(SEED_SERVICE_REQUIREMENTS);
   
   const [applications, setApplications] = useState<JobApplication[]>([
     {
@@ -267,6 +308,61 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return created;
   };
 
+  const addServiceRequirement = (reqData: Partial<ProfessionalServiceRequirement>): ProfessionalServiceRequirement => {
+    const created: ProfessionalServiceRequirement = {
+      id: `srv-${Date.now()}`,
+      posterId: currentUser.id,
+      posterName: currentUser.fullName,
+      serviceType: reqData.serviceType || 'GST Consultant',
+      industry: reqData.industry || 'General Corporate',
+      location: reqData.location || 'Pan-India / Remote',
+      budgetDisplay: reqData.budgetDisplay || 'Negotiable',
+      description: reqData.description || 'Professional service requirement.',
+      postedAt: 'Just now'
+    };
+    setServiceRequirements(prev => [created, ...prev]);
+    return created;
+  };
+
+  const addCommunityQuestion = (title: string, category: CommunityQuestion['category'], content: string) => {
+    const newQuestion: CommunityQuestion = {
+      id: `q-${Date.now()}`,
+      authorName: currentUser.fullName,
+      authorRole: currentUser.roles.includes('CA') ? 'Chartered Accountant' : 'Finance Professional',
+      category,
+      title,
+      content,
+      createdAt: 'Just now',
+      answersCount: 0,
+      answers: []
+    };
+    setCommunityQuestions(prev => [newQuestion, ...prev]);
+  };
+
+  const addCommunityAnswer = (questionId: string, content: string) => {
+    const newAnswer = {
+      id: `ans-${Date.now()}`,
+      authorName: currentUser.fullName,
+      authorRole: currentUser.roles.includes('CA') ? 'Chartered Accountant' : 'Finance Professional',
+      content,
+      createdAt: 'Just now',
+      upvotes: 1
+    };
+    setCommunityQuestions(prev => prev.map(q => q.id === questionId ? {
+      ...q,
+      answersCount: q.answersCount + 1,
+      answers: [...q.answers, newAnswer]
+    } : q));
+  };
+
+  const toggleFollowTopic = (topicId: string) => {
+    setTopics(prev => prev.map(t => t.id === topicId ? {
+      ...t,
+      isFollowing: !t.isFollowing,
+      followersCount: t.isFollowing ? t.followersCount - 1 : t.followersCount + 1
+    } : t));
+  };
+
   const applyForJob = (jobId: string, coverNote?: string): boolean => {
     const targetJob = jobs.find(j => j.id === jobId);
     if (!targetJob) return false;
@@ -429,6 +525,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         applications,
         enquiries,
         termSheets,
+        communityQuestions,
+        topics,
+        marketSignals,
+        serviceRequirements,
         savedJobIds,
         savedCompanyIds,
         comparedCompanyIds,
@@ -437,6 +537,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         addJob,
         addCompany,
         addBuyRequest,
+        addServiceRequirement,
+        addCommunityQuestion,
+        addCommunityAnswer,
+        toggleFollowTopic,
         applyForJob,
         updateApplicationStage,
         submitCompanyEnquiry,

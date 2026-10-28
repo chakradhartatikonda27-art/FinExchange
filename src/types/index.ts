@@ -318,8 +318,72 @@ export interface NotificationItem {
   id: string;
   title: string;
   message: string;
-  type: 'APPLICATION' | 'ENQUIRY' | 'MATCHING_JOB' | 'MATCHING_COMPANY' | 'VERIFICATION';
+  type: 'APPLICATION' | 'ENQUIRY' | 'MATCHING_JOB' | 'MATCHING_COMPANY' | 'VERIFICATION' | 'TOPIC_ALERT' | 'REQUIREMENT_MATCH';
   createdAt: string;
   isRead: boolean;
   contextLink?: string;
+}
+
+export type OpportunityType = 
+  | 'JOB' 
+  | 'INTERNSHIP' 
+  | 'ARTICLESHIP' 
+  | 'HIRING_REQUIREMENT' 
+  | 'COMPANY_FOR_SALE' 
+  | 'COMPANY_WANTED' 
+  | 'PROFESSIONAL_REQUIREMENT' 
+  | 'PROFESSIONAL_SERVICE' 
+  | 'BUSINESS_REQUIREMENT' 
+  | 'GENERAL_OPPORTUNITY';
+
+export interface CommunityAnswer {
+  id: string;
+  authorName: string;
+  authorRole: string;
+  content: string;
+  createdAt: string;
+  upvotes: number;
+}
+
+export interface CommunityQuestion {
+  id: string;
+  authorName: string;
+  authorRole: string;
+  category: 'GST' | 'Income Tax' | 'Audit' | 'Accounting' | 'Finance' | 'ROC & Companies Act' | 'Career' | 'HR & Hiring';
+  title: string;
+  content: string;
+  createdAt: string;
+  answersCount: number;
+  answers: CommunityAnswer[];
+}
+
+export interface TopicChannel {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  followersCount: number;
+  isFollowing: boolean;
+}
+
+export interface MarketSignalItem {
+  id: string;
+  region: string;
+  title: string;
+  metric1: string;
+  metric2: string;
+  metric3: string;
+  category: 'HIRING' | 'ACQUISITION' | 'SERVICES';
+}
+
+export interface ProfessionalServiceRequirement {
+  id: string;
+  posterId: string;
+  posterName: string;
+  serviceType: 'GST Consultant' | 'Virtual CFO' | 'Internal Auditor' | 'ROC Compliance Specialist' | 'Taxation Advisor';
+  industry: string;
+  location: string;
+  budgetDisplay: string;
+  description: string;
+  postedAt: string;
 }

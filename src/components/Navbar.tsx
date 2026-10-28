@@ -204,6 +204,14 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenCreateModal }) => {
             </Link>
 
             <Link
+              href="/dashboard#network-hub"
+              className="flex items-center space-x-1 text-slate-600 hover:text-indigo-600 transition-colors"
+            >
+              <Sparkles className="w-4 h-4 text-indigo-500" />
+              <span>Opportunity Network</span>
+            </Link>
+
+            <Link
               href="/dashboard"
               className={`flex items-center space-x-1 transition-colors ${
                 pathname?.startsWith('/dashboard') ? 'text-emerald-600 font-bold' : 'text-slate-600 hover:text-slate-900'

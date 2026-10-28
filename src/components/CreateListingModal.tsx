@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react';
-import { Briefcase, Building2, TrendingUp, Users, Sparkles, X } from 'lucide-react';
+import { Briefcase, Building2, TrendingUp, Users, Sparkles, X, ClipboardList } from 'lucide-react';
 
 interface CreateListingModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSelectOption: (option: 'JOB' | 'SELL_COMPANY' | 'BUY_COMPANY' | 'PROFESSIONAL_SERVICE' | 'WHATSAPP_AI') => void;
+  onSelectOption: (option: 'JOB' | 'SELL_COMPANY' | 'BUY_COMPANY' | 'PROFESSIONAL_SERVICE' | 'WHATSAPP_AI' | 'SERVICE_REQUIREMENT') => void;
 }
 
 export const CreateListingModal: React.FC<CreateListingModalProps> = ({ isOpen, onClose, onSelectOption }) => {
@@ -97,6 +97,22 @@ export const CreateListingModal: React.FC<CreateListingModalProps> = ({ isOpen, 
             <div>
               <span className="text-sm font-bold text-slate-900 block">🔎 Company Acquisition Requirement</span>
               <span className="text-xs text-slate-500">Post target acquisition budget & location parameters</span>
+            </div>
+          </button>
+
+          <button
+            onClick={() => {
+              onClose();
+              onSelectOption('SERVICE_REQUIREMENT');
+            }}
+            className="w-full p-3.5 rounded-2xl bg-white border border-slate-200 hover:border-slate-400 transition-all text-left flex items-center space-x-3.5 group"
+          >
+            <div className="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-700 flex items-center justify-center flex-shrink-0 group-hover:scale-105 transition-transform">
+              <ClipboardList className="w-5 h-5" />
+            </div>
+            <div>
+              <span className="text-sm font-bold text-slate-900 block">📋 Professional Service Need</span>
+              <span className="text-xs text-slate-500">Hire Virtual CFO, GST Specialist, or Statutory Auditor</span>
             </div>
           </button>
 

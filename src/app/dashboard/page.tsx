@@ -1,10 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { WorkspaceRole } from '../../types';
 import { RecruiterAtsBoard } from '../../components/RecruiterAtsBoard';
 import { CentralInbox } from '../../components/CentralInbox';
+import { MatchCenter } from '../../components/MatchCenter';
+import { RequirementsBoard } from '../../components/RequirementsBoard';
+import { CommunityQuestions } from '../../components/CommunityQuestions';
+import { TopicChannels } from '../../components/TopicChannels';
+import { MarketSignals } from '../../components/MarketSignals';
 import { 
   ShieldCheck, 
   CheckCircle2, 
@@ -25,7 +30,12 @@ import {
   ChevronRight,
   Filter,
   Zap,
-  Sparkles
+  Sparkles,
+  HelpCircle,
+  Hash,
+  TrendingUp,
+  Target,
+  ListFilter
 } from 'lucide-react';
 import { matchCompanyWithBuyers, matchJobWithProfessionals } from '../../lib/matchingEngine';
 
@@ -52,6 +62,26 @@ export default function DashboardPage() {
   const [professionalSubTab, setProfessionalSubTab] = useState<'MINI_CV' | 'INVITATIONS' | 'INBOX'>('MINI_CV');
   const [buyerSubTab, setBuyerSubTab] = useState<'ENQUIRIES' | 'SAVED_COMPANIES' | 'BUY_MANDATES' | 'INBOX'>('ENQUIRIES');
   const [sellerSubTab, setSellerSubTab] = useState<'MY_LISTINGS' | 'BUYER_BIDS' | 'NDA_VAULT' | 'ADMIN_VERIFICATION' | 'INBOX'>('MY_LISTINGS');
+  const [networkTab, setNetworkTab] = useState<'MATCH_CENTER' | 'REQUIREMENTS' | 'COMMUNITY_QA' | 'TOPICS' | 'SIGNALS'>('MATCH_CENTER');
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('networkTab') || params.get('tab');
+      if (tabParam && ['MATCH_CENTER', 'REQUIREMENTS', 'COMMUNITY_QA', 'TOPICS', 'SIGNALS'].includes(tabParam.toUpperCase())) {
+        setNetworkTab(tabParam.toUpperCase() as any);
+        setTimeout(() => {
+          const hubEl = document.getElementById('network-hub');
+          if (hubEl) hubEl.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      } else if (window.location.hash === '#network-hub') {
+        setTimeout(() => {
+          const hubEl = document.getElementById('network-hub');
+          if (hubEl) hubEl.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, []);
 
   const savedJobs = jobs.filter(j => savedJobIds.includes(j.id));
   const savedCompanies = companies.filter(c => savedCompanyIds.includes(c.id));
@@ -664,6 +694,99 @@ export default function DashboardPage() {
           {sellerSubTab === 'INBOX' && <CentralInbox />}
         </div>
       )}
+
+      {/* -------------------------------------------------------------
+          PROFESSIONAL OPPORTUNITY NETWORK ADD-ON HUB
+      ------------------------------------------------------------- */}
+      <div id="network-hub" className="pt-8 border-t border-slate-200 space-y-6 scroll-mt-20">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="bg-indigo-600 text-white text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-full">
+                Add-on Module
+              </span>
+              <h2 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
+                Professional Opportunity Network
+              </h2>
+            </div>
+            <p className="text-xs text-slate-500 mt-1">
+              Structured requirements, 2-way AI matching, technical Q&A, topic channels, and privacy-safe market signals.
+            </p>
+          </div>
+
+          {/* Sub-tab pills */}
+          <div className="flex items-center gap-1.5 bg-slate-100 p-1.5 rounded-2xl overflow-x-auto no-scrollbar touch-pan-x">
+            <button
+              onClick={() => setNetworkTab('MATCH_CENTER')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                networkTab === 'MATCH_CENTER'
+                  ? 'bg-indigo-600 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+              }`}
+            >
+              <Target className="w-3.5 h-3.5" />
+              <span>Match Center</span>
+            </button>
+
+            <button
+              onClick={() => setNetworkTab('REQUIREMENTS')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                networkTab === 'REQUIREMENTS'
+                  ? 'bg-indigo-600 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+              }`}
+            >
+              <ListFilter className="w-3.5 h-3.5" />
+              <span>Requirements Board</span>
+            </button>
+
+            <button
+              onClick={() => setNetworkTab('COMMUNITY_QA')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                networkTab === 'COMMUNITY_QA'
+                  ? 'bg-indigo-600 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+              }`}
+            >
+              <HelpCircle className="w-3.5 h-3.5" />
+              <span>Ask the Network</span>
+            </button>
+
+            <button
+              onClick={() => setNetworkTab('TOPICS')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                networkTab === 'TOPICS'
+                  ? 'bg-indigo-600 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+              }`}
+            >
+              <Hash className="w-3.5 h-3.5" />
+              <span>Topic Channels</span>
+            </button>
+
+            <button
+              onClick={() => setNetworkTab('SIGNALS')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
+                networkTab === 'SIGNALS'
+                  ? 'bg-indigo-600 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200'
+              }`}
+            >
+              <TrendingUp className="w-3.5 h-3.5" />
+              <span>Market Signals</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Tab Content */}
+        <div className="transition-all">
+          {networkTab === 'MATCH_CENTER' && <MatchCenter />}
+          {networkTab === 'REQUIREMENTS' && <RequirementsBoard />}
+          {networkTab === 'COMMUNITY_QA' && <CommunityQuestions />}
+          {networkTab === 'TOPICS' && <TopicChannels />}
+          {networkTab === 'SIGNALS' && <MarketSignals />}
+        </div>
+      </div>
 
     </div>
   );

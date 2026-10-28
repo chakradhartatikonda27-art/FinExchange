@@ -12,7 +12,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isQuickPostOpen, setIsQuickPostOpen] = useState(false);
 
-  const handleSelectCreateOption = (option: 'JOB' | 'SELL_COMPANY' | 'BUY_COMPANY' | 'PROFESSIONAL_SERVICE' | 'WHATSAPP_AI') => {
+  const handleSelectCreateOption = (option: 'JOB' | 'SELL_COMPANY' | 'BUY_COMPANY' | 'PROFESSIONAL_SERVICE' | 'WHATSAPP_AI' | 'SERVICE_REQUIREMENT') => {
     if (option === 'WHATSAPP_AI') {
       setIsQuickPostOpen(true);
     } else if (option === 'JOB') {
@@ -21,6 +21,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       window.location.href = '/companies?action=sell';
     } else if (option === 'BUY_COMPANY') {
       window.location.href = '/companies?action=buy';
+    } else if (option === 'SERVICE_REQUIREMENT') {
+      window.location.href = '/dashboard?networkTab=REQUIREMENTS#network-hub';
     } else {
       window.location.href = '/directory?action=register';
     }
